@@ -1,0 +1,273 @@
+/* src/App.css
+   Mobile-first, accessible, responsive.
+   - Stacked card on small screens (unchanged)
+   - Full-screen hero on desktop (>=1024px)
+   - Prevents horizontal overflow (min-width:0 where needed)
+*/
+
+/* ---------- Reset & base ---------- */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* background: linear-gradient(180deg, #262626 0%, #0f0f0f 100%); */
+  color: #fff;
+  overflow-x: hidden;
+  padding: 20px; /* small padding for mobile/tablet */
+}
+
+/* ---------- Accessible visually-hidden utility ---------- */
+.sr-only {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+  border: 0; padding: 0; margin: -1px;
+}
+
+/* ---------- HERO / PHONE FRAME (container) - MOBILE DEFAULT ---------- */
+.phone-frame {
+  width: min(420px, 100%);
+  max-width: 420px;
+  margin: 0 auto;
+  height: clamp(680px, 78vh, 820px);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(10,10,10,0.88), rgba(6,6,6,0.96));
+  box-shadow: 0 28px 60px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.02);
+  position: relative;
+  overflow: hidden;
+}
+
+/* internal wrapper */
+.phone-inner {
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+/* logo top-left (absolute) */
+.phone-header {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+.logo { height: 28px; width: auto; }
+
+/* ---------- Grid layout: title top, search card below (mobile) ---------- */
+.phone-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Title */
+.title {
+  margin: 0;
+  text-align: center;
+  font-weight: 800;
+  line-height: 1.05;
+  color: #fff;
+  font-size: 22px;
+}
+
+/* ---------- Search card (mobile stacked) ---------- */
+.search-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  width: 86%;
+  max-width: 360px;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(30,30,30,0.60), rgba(18,18,18,0.60));
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.55);
+}
+
+/* Individual control containers */
+.control { min-width: 0; display: flex; align-items: center; }
+
+/* Dropdown segment - mobile */
+.control-select {
+  width: 100%;
+  flex: 0 0 auto;
+}
+.control-select select {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  border: none;
+  padding: 0 14px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #111;
+  background: rgba(255,255,255,0.97);
+  cursor: pointer;
+  text-align: center;
+}
+
+/* Input segment - middle, flexible */
+.control-input {
+  width: 100%;
+  flex: 0 0 auto;
+}
+.control-input input {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  padding: 0 14px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  
+}
+
+.control-input input:hover {
+  border: 1px solid rgb(121, 121, 121);
+}
+.control-input input::placeholder { color: rgba(255,255,255,0.7); }
+
+/* Button segment - mobile */
+.control-button {
+  width: 100%;
+  flex: 0 0 auto;
+}
+.btn-search {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  border: none;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  background: linear-gradient(180deg,#2b6ef6,#1549d6);
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(21,73,214,0.22);
+}
+
+/* ---------- Desktop: full screen hero (>=1024px) ---------- */
+@media (min-width: 1024px) {
+  /* remove body padding so hero fills viewport completely */
+  body { padding: 0; }
+
+  /* phone-frame becomes full-bleed hero */
+  .phone-frame {
+    width: 100vw;
+    max-width: none;
+    margin: 0;
+    height: 100vh;
+    border-radius: 0;
+    background: linear-gradient(180deg, rgba(6,6,6,0.92), rgba(2,2,2,0.98));
+    box-shadow: none;
+  }
+
+  .phone-inner {
+    height: 100%;
+    padding: 64px 96px; comfortable internal spacing on wide screens
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    justify-items: stretch;
+  }
+
+  /* logo bigger and more spaced on desktop */
+  .phone-header {
+    top: 28px;
+    left: 48px;
+  }
+  .logo { height: 36px; }
+
+  /* Title left column: left-aligned, large */
+  .phone-main { width: 100%;} /* use separate grid in phone-inner */
+  .title {
+    grid-column: 1 / 2;
+    justify-self: start;
+    text-align: left;
+    font-size: clamp(28px, 4vw, 56px);
+    margin: 0;
+    font-family: 'Times New Roman';
+    font-
+  }
+
+  /* Search card becomes horizontal pill and sits in right column, centered vertically & horizontally */
+  .search-card {
+    grid-column: 2 / 3;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    width: min(920px, 70%);
+    max-width: 30vw;
+    min-width: 70vw;
+    padding: 10px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(24,24,24,0.65), rgba(12,12,12,0.65));
+    box-shadow: 0 22px 56px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.02);
+    }
+  /* Desktop control sizing: left fixed, middle flexible, right fixed */
+  .control-select { width: 220px; flex: 0 0 220px; }
+  .control-select select {
+    height: 64px;
+    border-radius: 999px;
+    padding: 0 20px;
+    text-align: left;
+    font-size: 15px;
+  }
+  .control-input { flex: 1 1 auto; min-width: 30vw; }
+  .control-input input {
+    height: 64px;
+    border-radius: 999px;
+    padding: 0 24px;
+    font-size: 16px;
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    backdrop-filter: blur(4px);
+  }
+  .control-input input::placeholder { color: rgba(255,255,255,0.7); }
+
+  .control-button { width: 180px; flex: 0 0 180px; }
+  .btn-search {
+    height: 64px;
+    border-radius: 999px;
+    font-size: 16px;
+    box-shadow: 0 14px 36px rgba(21,73,214,0.24);
+  }
+
+  /* accessibility focus */
+  .control-select select:focus, .control-input input:focus, .btn-search:focus {
+    box-shadow: 0 10px 36px rgba(37,99,235,0.14);
+    outline: none;
+  }
+
+  /* ensure no horizontal scroll */
+  html, body { overflow-x: hidden; }
+}
+
+/* ---------- Fine-tuning for medium-large screens to prevent overflow ---------- */
+@media (min-width: 1280px) {
+  .phone-inner { padding-left: 120px; padding-right: 120px; gap: 64px; }
+  .search-card { width: min(1000px, 60%); }
+}

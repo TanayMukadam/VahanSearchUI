@@ -1,0 +1,39 @@
+/* Background and centering */
+:root{
+  height: 100vh;
+}
+
+body{
+  height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f1f5fa;
+  
+  background: #0F2027;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.main-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-page-center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+}
+
+
+.form-container {
+  border: 1px solid black;
+  height: 30vh;
+  width: 20vw;
+}
