@@ -47,7 +47,7 @@ function Search() {
           <div className="phone-frame" role="application" aria-label="Vahan check phone mockup">
             <div className="phone-inner">
               <header className="phone-header">
-                <img src="/images/logo.png" alt="Logo" className="logo" />
+                <img src="/images/logo.png" alt="Logo" className="login-logo-img" />
               </header>
     
               <main className="phone-main">

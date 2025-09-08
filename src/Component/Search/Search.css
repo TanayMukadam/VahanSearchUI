@@ -60,7 +60,8 @@ body {
   align-items: center;
   z-index: 10;
 }
-.logo { height: 28px; width: auto; }
+.login-logo{ position: absolute; top: max(.75rem, env(safe-area-inset-top)); left: max(.75rem, env(safe-area-inset-left)); display: flex; align-items: center; }
+.login-logo-img{ height: 2.4rem; width: auto; }
 
 /* ---------- Grid layout: title top, search card below (mobile) ---------- */
 .phone-main {
@@ -183,7 +184,7 @@ body {
 
   .phone-inner {
     height: 100%;
-    padding: 64px 96px; comfortable internal spacing on wide screens
+    padding: 64px 96px; 
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 48px;
@@ -196,7 +197,7 @@ body {
     top: 28px;
     left: 48px;
   }
-  .logo { height: 36px; }
+  .logo { height: 50px; }
 
   /* Title left column: left-aligned, large */
   .phone-main { width: 100%;} /* use separate grid in phone-inner */
