@@ -1,110 +1,62 @@
-{
-	"essentials": {
-		"vehicleNumber": "HR37E0355",
-		"patronId": "645f56f768dd88037eb1cd52"
-	},
-	"id": "6800a4ed994d3f0022e060e0",
-	"patronId": "645f56f768dd88037eb1cd52",
-	"task": "detailedSearch",
-	"result": {
-		"regNo": "HR37E0355",
-		"class": "Goods Carrier",
-		"chassis": "MAT794004N1J27511",
-		"engine": "B5.6B6A180002122J63916043",
-		"vehicleManufacturerName": "TATA MOTORS LTD",
-		"model": "TATA LPT 2818 BS-VI",
-		"vehicleColour": "ARCTIC_WHITE",
-		"type": "DIESEL",
-		"normsType": "BHARAT STAGE VI",
-		"bodyType": "CLOSED BODY",
-		"ownerCount": "1",
-		"owner": "VRL LOGISTICS LTD",
-		"ownerFatherName": "-NA-",
-		"mobileNumber": "",
-		"status": "ACTIVE",
-		"statusAsOn": "17/04/2025",
-		"regAuthority": "RTA AMBALA",
-		"regDate": "16/11/2022",
-		"vehicleManufacturingMonthYear": "09/2022",
-		"rcExpiryDate": "13/11/2026",
-		"vehicleTaxUpto": "30/11/2025",
-		"vehicleInsuranceCompanyName": "THE NEW INDIA ASSURANCE COMPANY LIMITED",
-		"vehicleInsuranceUpto": "28/10/2025",
-		"vehicleInsurancePolicyNumber": "67280031240100007128",
-		"rcFinancer": "",
-		"presentAddress": "GODOWN NO 4,5 PRAKASH COMPLEX G T,ROAD KULDEEP NAGAR NR GULATI DHARAM,KANTA AMBALA CONTONMENT AMBALA,AMBALA,HARYANA",
-		"splitPresentAddress": {
-			"district": [
-				"AMBALA"
-			],
-			"state": [
-				[
-					"HARYANA",
-					"HR"
-				]
-			],
-			"city": [
-				"AMBALA"
-			],
-			"pincode": "133004",
-			"country": [
-				"IN",
-				"IND",
-				"INDIA"
-			],
-			"addressLine": "GODOWN NO 4,5 PRAKASH COMPLEX G T,ROAD KULDEEP NAGAR NR GULATI DHARAM,KANTA CONTONMENT"
-		},
-		"permanentAddress": "GODOWN NO 4,5 PRAKASH COMPLEX G T,ROAD KULDEEP NAGAR NR GULATI DHARAM,KANTA AMBALA CONTONMENT AMBALA,AMBALA,HARYANA",
-		"splitPermanentAddress": {
-			"district": [
-				"AMBALA"
-			],
-			"state": [
-				[
-					"HARYANA",
-					"HR"
-				]
-			],
-			"city": [
-				"AMBALA"
-			],
-			"pincode": "133004",
-			"country": [
-				"IN",
-				"IND",
-				"INDIA"
-			],
-			"addressLine": "GODOWN NO 4,5 PRAKASH COMPLEX G T,ROAD KULDEEP NAGAR NR GULATI DHARAM,KANTA CONTONMENT"
-		},
-		"vehicleCubicCapacity": "5635",
-		"grossVehicleWeight": "28000",
-		"unladenWeight": "10580",
-		"vehicleCategory": "HGV",
-		"rcStandardCap": "0",
-		"vehicleCylindersNo": "6",
-		"vehicleSeatCapacity": "1",
-		"vehicleSleeperCapacity": "0",
-		"vehicleStandingCapacity": "0",
-		"wheelbase": "6780",
-		"vehicleNumber": "HR37E0355",
-		"puccNumber": "HR06200860003437",
-		"puccUpto": "27/09/2025",
-		"blacklistStatus": "",
-		"blacklistDetails": [],
-		"challanDetails": [],
-		"permitIssueDate": "",
-		"permitNumber": "HR2022-NP-9335C",
-		"permitType": "National Permit [MULTI AXLE GOODS VCH(<=50tons)]",
-		"permitValidFrom": "18/11/2022",
-		"permitValidUpto": "17/11/2027",
-		"nonUseStatus": "",
-		"nonUseFrom": "",
-		"nonUseTo": "",
-		"nationalPermitNumber": "",
-		"nationalPermitUpto": "",
-		"nationalPermitIssuedBy": "",
-		"isCommercial": true,
-		"nocDetails": "",
-		"rtoCode": "HR37"
-	}
-}
+[
+    {
+        "regNo": "DL10CD1091",
+        "class": "Pvt. Car",
+        "chassis": "MALBB51BLBM324560",
+        "engine": "G4LABM711072",
+        "vehicleManufacturerName": "HYUNDAI",
+        "model": "I20  |  ASTA 1.2 (0)",
+        "vehicleColour": "",
+        "type": "",
+        "normsType": "",
+        "bodyType": "",
+        "ownerCount": null,
+        "owner": "Gobind rai sharma",
+        "ownerFatherName": "",
+        "mobileNumber": "9911304503",
+        "status": "",
+        "statusAsOn": null,
+        "regAuthority": "",
+        "regDate": null,
+        "vehicleManufacturingMonthYear": null,
+        "rcExpiryDate": null,
+        "vehicleTaxUpto": null,
+        "vehicleInsuranceCompanyName": "",
+        "vehicleInsuranceUpto": null,
+        "vehicleInsurancePolicyNumber": "",
+        "rcFinancer": "",
+        "presentAddress": "",
+        "splitPresentAddress": "{\"district\":[\"West\"],\"state\":[[\"Delhi\"]],\"city\":[\"Janakpuri\"],\"pincode\":\"110018\",\"country\":[\"IN\",\"IND\",\"INDIA\"],\"addressLine\":\"a-6 New krishna park ,vikaspuri New delhi\"}",
+        "permanentAddress": "",
+        "splitPermanentAddress": "{\"district\":[\"West\"],\"state\":[[\"Delhi\"]],\"city\":[\"Janakpuri\"],\"pincode\":\"110018\",\"country\":[\"IN\",\"IND\",\"INDIA\"],\"addressLine\":\"a-6 New krishna park ,vikaspuri New delhi\"}",
+        "vehicleCubicCapacity": null,
+        "grossVehicleWeight": null,
+        "unladenWeight": null,
+        "vehicleCategory": "",
+        "rcStandardCap": null,
+        "vehicleCylindersNo": null,
+        "vehicleSeatCapacity": null,
+        "vehicleSleeperCapacity": null,
+        "vehicleStandingCapacity": null,
+        "wheelbase": null,
+        "vehicleNumber": "DL10CD1091",
+        "puccNumber": "",
+        "puccUpto": null,
+        "blacklistStatus": "",
+        "blacklistDetails": "",
+        "challanDetails": "",
+        "permitIssueDate": null,
+        "permitNumber": "",
+        "permitType": "",
+        "permitValidFrom": null,
+        "permitValidUpto": null,
+        "nonUseStatus": "",
+        "nonUseFrom": null,
+        "nonUseTo": null,
+        "nationalPermitNumber": "",
+        "nationalPermitUpto": null,
+        "nationalPermitIssuedBy": "",
+        "isCommercial": 0,
+        "nocDetails": ""
+    }
+]

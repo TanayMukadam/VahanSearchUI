@@ -60,6 +60,8 @@ html, body {
 /* Title flexes; actions stick to the right */
 .results-title{
   margin: 0;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 50px;
   flex: 1 1 auto;
   text-align: center;
 }
@@ -133,7 +135,7 @@ html, body {
 /* Titles */
 .card-title{
   margin: .2rem .2rem .9rem;
-  font-size: clamp(1rem, 3.8vw, 1.25rem);
+  font-size: clamp(1.5rem, 3vw, 1.25rem);
   font-weight: 700; color: #1f2937;
 }
 
@@ -198,9 +200,10 @@ html, body {
   box-shadow: 0 1px 0 rgba(0,0,0,.03) inset;
 }
 .field.wide{ grid-column: 1 / -1; }
-.field-label{ font-size: clamp(.75rem, 3.3vw, .85rem); color: #374151; margin-bottom: .2rem; }
+.field-label{ font-size: clamp(.75rem, 3.3vw, .85rem); font-weight: 700; color: #3a414b; margin-bottom: .2rem; }
 .field-value{
   font-size: clamp(.9rem, 3.6vw, 1rem);
+  font-weight: 400;
   color: #111827;
   word-break: break-word;
   overflow-wrap: anywhere;

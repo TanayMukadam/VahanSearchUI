@@ -32,7 +32,7 @@ export default function App() {
       </header>
 
       <main className="glass login-card" role="main" aria-labelledby="loginTitle">
-        <h1 id="loginTitle" className="login-title">Welcome back</h1>
+        <h1 id="loginTitle" className="login-title">Vahan Check</h1>
         <p className="login-subtitle">Log in to continue</p>
 
         <form className="login-form" onSubmit={handleSubmit} autoComplete="on">

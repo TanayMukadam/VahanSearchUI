@@ -107,7 +107,7 @@ html, body {
   text-align: center;
   font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   font-size: clamp(1.5rem, 5.5vw, 2.2rem);
-  color: #1f2937;
+  color: #1e2024;
 }
 .login-subtitle{
   margin: 0 0 1rem;
