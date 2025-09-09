@@ -46,8 +46,8 @@ function Search() {
     <div className="dash-root">
           <div className="phone-frame" role="application" aria-label="Vahan check phone mockup">
             <div className="phone-inner">
-              <header className="phone-header">
-                <img src="/images/logo.png" alt="Logo" className="login-logo-img" />
+              <header className="login-logo" aria-label="Site logo">
+                <img className="login-logo-img" src="/public/images/logo.png" alt="CheckExplore Technologies" />
               </header>
     
               <main className="phone-main">
@@ -86,7 +86,7 @@ function Search() {
                   </div>
     
                   <div className="control control-button">
-                    <button type="submit" className="btn-search" aria-label="Search">
+                    <button type="submit" className="btn-search login-btn" aria-label="Search">
                       <FaSearch aria-hidden="true" />
                       <span>Search</span>
                     </button>

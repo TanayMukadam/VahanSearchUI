@@ -1,8 +1,13 @@
+// App.jsx
 import React, { useState } from "react";
 import "./App.css";
 
 export default function App() {
-  const [form, setForm] = useState({ username: "", password: "", showPwd: false });
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+    showPwd: false,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,65 +22,64 @@ export default function App() {
   };
 
   return (
-    <div className="login-root">
-      {/* Logo */}
-      <div className="login-logo" aria-hidden="true">
-        <img src="/public/images/logo.png" alt="Logo" className="login-logo-img" />
-      </div>
+    <div
+      className="login-root"
+      // Set the brand color once to match the logo (adjust this hex to logo green)
+      style={{ "--brand": "#99C129" }}
+    >
+      <header className="login-logo" aria-label="Site logo">
+        <img className="login-logo-img" src="/public/images/logo.png" alt="CheckExplore Technologies" />
+      </header>
 
-      {/* Glass card */}
-      <main className="login-card glass">
-        <h1 className="login-title">Vahan Search</h1>
+      <main className="glass login-card" role="main" aria-labelledby="loginTitle">
+        <h1 id="loginTitle" className="login-title">Welcome back</h1>
+        <p className="login-subtitle">Log in to continue</p>
 
-        <form className="login-form" onSubmit={handleSubmit} noValidate>
-          {/* Username */}
+        <form className="login-form" onSubmit={handleSubmit} autoComplete="on">
           <div className="field-row">
-            <label htmlFor="username" className="field-label">Username</label>
+            <label htmlFor="username" className="field-label">Username or Email</label>
             <input
               id="username"
               name="username"
-              type="text"
-              autoComplete="username"
               className="field-input"
-              placeholder="Enter your username"
+              type="text"
+              inputMode="email"
+              autoComplete="username"
+              placeholder="name@example.com"
               value={form.username}
               onChange={handleChange}
-              required
+              aria-required="true"
             />
           </div>
 
-          {/* Password + toggle */}
           <div className="field-row">
             <label htmlFor="password" className="field-label">Password</label>
             <div className="pwd-wrap">
               <input
                 id="password"
                 name="password"
+                className="field-input pwd-input"
                 type={form.showPwd ? "text" : "password"}
                 autoComplete="current-password"
-                className="field-input pwd-input"
-                placeholder="Enter your password"
+                placeholder="••••••••"
                 value={form.password}
                 onChange={handleChange}
-                required
-                aria-describedby="pwd-help"
+                aria-required="true"
               />
               <button
                 type="button"
                 className="pwd-toggle"
-                aria-controls="password"
-                aria-pressed={form.showPwd}
                 onClick={() => setForm((s) => ({ ...s, showPwd: !s.showPwd }))}
+                aria-pressed={form.showPwd}
+                aria-label={form.showPwd ? "Hide password" : "Show password"}
               >
                 {form.showPwd ? "Hide" : "Show"}
               </button>
             </div>
-            <div id="pwd-help" className="sr-only">
-              Toggle button switches password visibility; current state {form.showPwd ? "visible" : "hidden"}.
-            </div>
           </div>
 
-          <button className="login-btn" type="submit">Login</button>
+          {/* Button style remains exactly the same class: login-btn */}
+          <button type="submit" className="login-btn">Sign in</button>
         </form>
       </main>
     </div>

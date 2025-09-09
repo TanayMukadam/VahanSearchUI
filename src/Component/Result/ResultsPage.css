@@ -1,52 +1,48 @@
-/* Global */
+/* ResultsPage.css */
+
+/* Base */
 html, body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  overflow-x: clip;     /* prevent horizontal scroll while keeping vertical */
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
+*, *::before, *::after { box-sizing: border-box; }
+:root { --brand: #99C129; }
 
-/* Ensure padding/borders don’t cause overflow */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-/* Shell */
+/* Shell (light theme to match login/search) */
 .results-root{
   position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #fff;
-  background-image: linear-gradient(to bottom, #2d2d2d, #171717 40%, #000);
-
-  /* notch-safe, tighter mobile padding */
-  padding-top: max(3.5rem, calc(env(safe-area-inset-top) + 2.25rem));
+  color: #111827;
+  background-image: linear-gradient(to bottom, #f5f7fa, #e9eef3);
+  padding-top: max(6rem, calc(env(safe-area-inset-top) + 2.25rem));
   padding-right: max(0.6rem, env(safe-area-inset-right));
   padding-bottom: 2rem;
   padding-left: max(0.6rem, env(safe-area-inset-left));
-
   width: 100%;
-  max-width: 100vw; /* never exceed viewport width */
+  max-width: 100vw;
 }
 
-/* Logo */
+/* Logo (reuse login sizing) */
 .results-logo{
   position: absolute;
   top: max(.6rem, env(safe-area-inset-top));
   left: max(.6rem, env(safe-area-inset-left));
   display: flex; align-items: center;
 }
-.results-logo-img{ height: 2.25rem; width: auto; }
-@media (min-width:48em){ .results-logo-img{ height: 3.5rem; } } /* ~768px */
+.results-logo-img{ height: calc(2.4rem * 1.15); width: auto; }
+@media (min-width:48em){ .results-logo-img{ height: calc(3.5rem * 1.15); } }
 
 /* Header */
 .results-header{
   width: 100%;
-  max-width: min(68rem, 100%);
-  margin: 0 auto .75rem;
+  max-width: min(68rem, 94vw);            /* align width with panels */
+  margin: 0 auto clamp(12px, 2vw, 18px);  /* spacing below header */
   display: flex;
   align-items: center;
   gap: .5rem;
@@ -58,81 +54,153 @@ html, body {
   margin-left: auto;
   font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   font-size: clamp(1.5rem, 4.5vw, 3rem);
+  color: #1f2937;
 }
 
 /* Back button */
 .results-back{
-  display: inline-flex; 
-  /* align-items: center;  */
+  display: inline-flex;
   gap: .4rem;
   border: none;
   border-radius: 9999px;
-  background: #2e415c; 
+  background: #004F51;
   color: #fff;
   padding: .5rem .85rem;
   cursor: pointer;
   transition: background-color .15s ease, box-shadow .15s ease;
   font-size: clamp(.85rem, 3.5vw, 1rem);
 }
-.results-back:hover{ background: #111827; }
-.results-back:focus{ outline: 0; box-shadow: 0 0 0 6px rgba(96,165,250,.35); }
-.results-back-ic{ font-size: 1rem; }
+.results-back:hover{ background: var(--brand); transition: 1s ease-in-out; }
+.results-back:focus{ outline: 0; box-shadow: 0 0 0 6px color-mix(in oklab, var(--brand) 35%, white); }
 
-/* Cards */
+/* Panels (glass) */
 .panel.glass{
   border-radius: 1rem;
-  padding: clamp(.6rem, 3vw, 1.25rem);
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.2);
-  outline: 1px solid rgba(255,255,255,.1);
-  -webkit-backdrop-filter: blur(12px) saturate(1.5);
-  backdrop-filter: blur(12px) saturate(1.5);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / .3), 0 4px 6px -4px rgb(0 0 0 / .3);
-
+  padding: clamp(.8rem, 2.6vw, 1.25rem);
+  background: rgba(255,255,255,.58);
+  border: 1px solid rgba(0,0,0,.06);
+  outline: 1px solid rgba(0,0,0,.04);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 10px 25px -10px rgba(0,0,0,.18), 0 2px 10px -2px rgba(0,0,0,.10);
   width: 100%;
-  max-width: 90%; /* panel never wider than its card */
+  max-width: min(68rem, 94vw);            /* consistent cap with header */
+  margin: clamp(12px, 2vw, 18px) auto;    /* add vertical separation */
+
+  /* Smooth open/close animation (0.60s) */
+  transition: transform .60s ease-in-out, opacity .60s ease-in-out, max-height .60s ease-in-out;
 }
 
+/* Optional helper if you ever toggle this class from JS */
+.panel.glass.is-collapsing{
+  transform: translateY(-2px);
+  opacity: .96;
+}
+
+/* Card container (inner content wrapper) */
 .card{
   width: 100%;
-  max-width: min(60rem, 100%);  /* respect viewport */
-  margin: 0 auto clamp(.6rem, 2.5vw, 1.25rem);
+  max-width: 100%;
+  padding: clamp(6px, 1.2vw, 12px);       /* inner padding so content never touches panel edge */
+  margin: 0;
 }
-
-/* Ensure nothing inside the card can exceed its width */
 .card, .card * { max-width: 100%; }
 
-/* Titles */
+/* Titles inside panel */
 .card-title{
-  margin: .15rem .2rem .8rem;
+  margin: .2rem .2rem .9rem;
   font-size: clamp(1rem, 3.8vw, 1.25rem);
-  font-weight: 700; color: #e5e7eb;
+  font-weight: 700; color: #1f2937;
 }
 
-/* Fields grid */
+/* Collapsible header */
+.card-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .5rem;
+}
+
+/* Toggle button */
+.card-toggle{
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.85);
+  color: #111827;
+  border-radius: 10px;
+  padding: .35rem .6rem;
+  cursor: pointer;
+  transition: box-shadow .18s ease, border-color .18s ease, background-color .18s ease, transform 3s ease;
+}
+.card-toggle:hover{
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand) 18%, white);
+  border-color: color-mix(in oklab, var(--brand) 42%, #94a3b8);
+}
+
+/* Chevron icon (pure CSS) — smooth 0.60s rotation */
+.chev{
+  display: inline-block;
+  width: .6rem;
+  height: .6rem;
+  border-right: 2px solid #111827;
+  border-bottom: 2px solid #111827;
+  transform: rotate(135deg);
+  transition: transform .60s ease-in-out;
+}
+.chev.open{
+  transform: rotate(400deg);
+}
+
+/* Grid */
 .grid-2{
   display: grid;
-  grid-template-columns: 1fr; /* single column on phones */
-  gap: .6rem;
+  grid-template-columns: 1fr;             /* phones */
+  gap: clamp(10px, 1.6vw, 16px);
+  min-width: 0;                           /* allow grid to shrink */
 }
 @media (min-width:48em){
-  .grid-2{ grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .grid-2{
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);  /* shrink-safe columns */
+    gap: clamp(12px, 1.8vw, 18px);
+  }
 }
 
-/* Field */
+/* Field box */
 .field{
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(0,0,0,.08);
   border-radius: .65rem;
   padding: clamp(.6rem, 2.6vw, .9rem);
   width: 100%;
+  min-width: 0;                           /* prevent content from forcing width */
+  box-shadow: 0 1px 0 rgba(0,0,0,.03) inset;
 }
 .field.wide{ grid-column: 1 / -1; }
-.field-label{ font-size: clamp(.75rem, 3.3vw, .85rem); color: #d1d5db; margin-bottom: .2rem; }
+.field-label{ font-size: clamp(.75rem, 3.3vw, .85rem); color: #374151; margin-bottom: .2rem; }
 .field-value{
   font-size: clamp(.9rem, 3.6vw, 1rem);
-  color: #fff;
+  color: #111827;
   word-break: break-word;
-  overflow-wrap: anywhere;  /* long tokens won’t push layout */
+  overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
+
+/* Inputs (future-proof focus ring parity) */
+input[type="text"], input[type="search"], select, textarea {
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.85);
+  color: #111827;
+  border-radius: .65rem;
+  padding: .6rem .8rem;
+  transition: box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+}
+input[type="text"]:focus, input[type="search"]:focus, select:focus, textarea:focus{
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand) 26%, white);
+  border-color: color-mix(in oklab, var(--brand) 42%, #94a3b8);
+  background: rgba(255,255,255,.95);
+  outline: none;
+}
+
+/* Extra bottom spacing safety */
+.panel.glass:last-of-type { margin-bottom: clamp(16px, 3vw, 28px); }
