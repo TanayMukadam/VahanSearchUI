@@ -1,6 +1,7 @@
 // ResultsPage.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { FiDownload, FiArrowLeft } from "react-icons/fi"; // react-icons glyphs [web:349][web:347]
 import "./ResultsPage.css";
 import dummy from "../../data.json";
 
@@ -67,9 +68,20 @@ export default function ResultsPage() {
     [rawData, fallbackRow]
   );
 
-  // Only two sections, both collapsible
+  // Two sections, both collapsible
   const [open, setOpen] = useState({ owner: true, car: true });
   const toggle = (k) => setOpen((s) => ({ ...s, [k]: !s[k] }));
+
+  // Download handler (JSON dump)
+  const handleDownload = () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${data.regNo || "vehicle"}-details.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="results-root">
@@ -77,9 +89,21 @@ export default function ResultsPage() {
         <img className="results-logo-img login-logo-img" src="/images/logo.png" alt="CheckExplore Technologies" />
       </header>
 
-      <div className="results-header">
-        <button className="results-back" onClick={() => navigate(-1)} aria-label="Go back">← Back</button>
-        <h1 className="results-title">Vehicle Details</h1>
+      {/* Header row with identical buttons on the same line as title */}
+      <div className="results-header results-header--with-actions">
+        <button className="btn-header" onClick={() => navigate(-1)} aria-label="Go back">
+          <FiArrowLeft aria-hidden="true" />
+          <span>Back</span>
+        </button>
+
+        <h1 className="results-title">VahanSearch</h1>
+
+        <div className="results-actions">
+          <button type="button" className="btn-header" onClick={handleDownload} aria-label="Download results">
+            <FiDownload aria-hidden="true" />
+            <span>Download</span>
+          </button>
+        </div>
       </div>
 
       {/* Owner details */}
@@ -94,16 +118,14 @@ export default function ResultsPage() {
         </div>
       </CardSection>
 
-      {/* Car details: combines registration/essentials + identification + validity + specs + permits */}
+      {/* Car details */}
       <CardSection title="Car details" open={open.car} onToggle={() => toggle("car")}>
         <div className="grid-2">
-          {/* Essentials */}
           <div className="field"><div className="field-label">Registration No</div><div className="field-value">{data.regNo}</div></div>
           <div className="field"><div className="field-label">Class</div><div className="field-value">{data.class}</div></div>
           <div className="field"><div className="field-label">Status</div><div className="field-value">{data.status} {data.statusAsOn ? `(${data.statusAsOn})` : ""}</div></div>
           <div className="field"><div className="field-label">RTO</div><div className="field-value">{data.regAuthority}</div></div>
 
-          {/* Identification */}
           <div className="field"><div className="field-label">Chassis</div><div className="field-value">{data.chassis}</div></div>
           <div className="field"><div className="field-label">Engine</div><div className="field-value">{data.engine}</div></div>
           <div className="field"><div className="field-label">Manufacturer</div><div className="field-value">{data.vehicleManufacturerName}</div></div>
@@ -113,7 +135,6 @@ export default function ResultsPage() {
           <div className="field"><div className="field-label">Norms</div><div className="field-value">{data.normsType}</div></div>
           <div className="field"><div className="field-label">Body</div><div className="field-value">{data.bodyType}</div></div>
 
-          {/* Validity */}
           <div className="field"><div className="field-label">Reg Date</div><div className="field-value">{data.regDate}</div></div>
           <div className="field"><div className="field-label">RC Expiry</div><div className="field-value">{data.rcExpiryDate}</div></div>
           <div className="field"><div className="field-label">Tax Upto</div><div className="field-value">{data.vehicleTaxUpto}</div></div>
@@ -121,7 +142,6 @@ export default function ResultsPage() {
           <div className="field"><div className="field-label">Insurance No</div><div className="field-value">{data.vehicleInsurancePolicyNumber}</div></div>
           <div className="field"><div className="field-label">PUCC</div><div className="field-value">{data.puccNumber} {data.puccUpto ? `(${data.puccUpto})` : ""}</div></div>
 
-          {/* Specs */}
           <div className="field"><div className="field-label">CC</div><div className="field-value">{data.vehicleCubicCapacity}</div></div>
           <div className="field"><div className="field-label">GVW</div><div className="field-value">{data.grossVehicleWeight}</div></div>
           <div className="field"><div className="field-label">Unladen</div><div className="field-value">{data.unladenWeight}</div></div>
@@ -132,7 +152,6 @@ export default function ResultsPage() {
           <div className="field"><div className="field-label">Standing</div><div className="field-value">{data.vehicleStandingCapacity}</div></div>
           <div className="field"><div className="field-label">Wheelbase</div><div className="field-value">{data.wheelbase}</div></div>
 
-          {/* Permits & misc */}
           <div className="field"><div className="field-label">Permit No</div><div className="field-value">{data.permitNumber || "—"}</div></div>
           <div className="field"><div className="field-label">Permit Type</div><div className="field-value">{data.permitType || "—"}</div></div>
           <div className="field"><div className="field-label">Valid From</div><div className="field-value">{data.permitValidFrom || "—"}</div></div>

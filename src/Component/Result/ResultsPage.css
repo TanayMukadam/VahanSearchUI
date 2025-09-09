@@ -41,37 +41,63 @@ html, body {
 /* Header */
 .results-header{
   width: 100%;
-  max-width: min(68rem, 94vw);            /* align width with panels */
-  margin: 0 auto clamp(12px, 2vw, 18px);  /* spacing below header */
+  max-width: min(68rem, 94vw);  /* align width with panels */
+  margin: 0 auto clamp(12px, 2vw, 18px);
   display: flex;
   align-items: center;
   gap: .5rem;
   padding-inline: .15rem;
 }
-.results-title{
-  margin: 0 auto;
-  text-align: center;
-  margin-left: auto;
-  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  font-size: clamp(1.5rem, 4.5vw, 3rem);
-  color: #1f2937;
+
+/* Header with actions on the same line */
+.results-header--with-actions{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-/* Back button */
-.results-back{
+/* Title flexes; actions stick to the right */
+.results-title{
+  margin: 0;
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+/* Actions wrapper (right side) */
+.results-actions{
+  flex: 0 0 auto;
   display: inline-flex;
-  gap: .4rem;
-  border: none;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Unified header button style (Back & Download) */
+.btn-header{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 .95rem;
   border-radius: 9999px;
+  border: none;
   background: #004F51;
   color: #fff;
-  padding: .5rem .85rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
   cursor: pointer;
-  transition: background-color .15s ease, box-shadow .15s ease;
-  font-size: clamp(.85rem, 3.5vw, 1rem);
+  transition: background-color .15s ease, box-shadow .15s ease, transform .08s ease;
 }
-.results-back:hover{ background: var(--brand); transition: 1s ease-in-out; }
-.results-back:focus{ outline: 0; box-shadow: 0 0 0 6px color-mix(in oklab, var(--brand) 35%, white); }
+.btn-header:hover{ background: var(--brand); transition: 1s ease-in-out; }
+.btn-header:focus{ outline: 0; box-shadow: 0 0 0 6px color-mix(in oklab, var(--brand) 35%, white); }
+.btn-header:active{ transform: translateY(1px); }
+
+/* size for react-icons inside buttons */
+.btn-header svg{
+  width: 18px; height: 18px; flex: 0 0 18px;
+}
 
 /* Panels (glass) */
 .panel.glass{
@@ -84,29 +110,27 @@ html, body {
   backdrop-filter: blur(18px) saturate(1.4);
   box-shadow: 0 10px 25px -10px rgba(0,0,0,.18), 0 2px 10px -2px rgba(0,0,0,.10);
   width: 100%;
-  max-width: min(68rem, 94vw);            /* consistent cap with header */
-  margin: clamp(12px, 2vw, 18px) auto;    /* add vertical separation */
-
-  /* Smooth open/close animation (0.60s) */
+  max-width: min(68rem, 94vw);
+  margin: clamp(12px, 2vw, 18px) auto;
   transition: transform .60s ease-in-out, opacity .60s ease-in-out, max-height .60s ease-in-out;
 }
 
-/* Optional helper if you ever toggle this class from JS */
+/* Optional helper if you toggle this class from JS */
 .panel.glass.is-collapsing{
   transform: translateY(-2px);
   opacity: .96;
 }
 
-/* Card container (inner content wrapper) */
+/* Card container */
 .card{
   width: 100%;
   max-width: 100%;
-  padding: clamp(6px, 1.2vw, 12px);       /* inner padding so content never touches panel edge */
+  padding: clamp(6px, 1.2vw, 12px);
   margin: 0;
 }
 .card, .card * { max-width: 100%; }
 
-/* Titles inside panel */
+/* Titles */
 .card-title{
   margin: .2rem .2rem .9rem;
   font-size: clamp(1rem, 3.8vw, 1.25rem);
@@ -138,30 +162,27 @@ html, body {
   border-color: color-mix(in oklab, var(--brand) 42%, #94a3b8);
 }
 
-/* Chevron icon (pure CSS) — smooth 0.60s rotation */
+/* Chevron icon */
 .chev{
   display: inline-block;
-  width: .6rem;
-  height: .6rem;
+  width: .6rem; height: .6rem;
   border-right: 2px solid #111827;
   border-bottom: 2px solid #111827;
   transform: rotate(135deg);
   transition: transform .60s ease-in-out;
 }
-.chev.open{
-  transform: rotate(400deg);
-}
+.chev.open{ transform: rotate(400deg); }
 
 /* Grid */
 .grid-2{
   display: grid;
-  grid-template-columns: 1fr;             /* phones */
+  grid-template-columns: 1fr;
   gap: clamp(10px, 1.6vw, 16px);
-  min-width: 0;                           /* allow grid to shrink */
+  min-width: 0;
 }
 @media (min-width:48em){
   .grid-2{
-    grid-template-columns: minmax(0,1fr) minmax(0,1fr);  /* shrink-safe columns */
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
     gap: clamp(12px, 1.8vw, 18px);
   }
 }
@@ -173,7 +194,7 @@ html, body {
   border-radius: .65rem;
   padding: clamp(.6rem, 2.6vw, .9rem);
   width: 100%;
-  min-width: 0;                           /* prevent content from forcing width */
+  min-width: 0;
   box-shadow: 0 1px 0 rgba(0,0,0,.03) inset;
 }
 .field.wide{ grid-column: 1 / -1; }
@@ -204,3 +225,36 @@ input[type="text"]:focus, input[type="search"]:focus, select:focus, textarea:foc
 
 /* Extra bottom spacing safety */
 .panel.glass:last-of-type { margin-bottom: clamp(16px, 3vw, 28px); }
+
+/* Mobile: show only icons in header buttons */
+@media (max-width: 480px){
+  /* Keep buttons same size, but hide the text label */
+  .btn-header span{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Center icons; slight pad so they don't touch edges */
+  .btn-header{
+    padding: 0 .7rem;     /* tighter horizontal padding for phone */
+    gap: 0;               /* icon only, no gap needed */
+  }
+
+  /* Optional: reduce icon size a bit on small screens */
+  .btn-header svg{
+    width: 16px;
+    height: 16px;
+  }
+
+  /* If title needs a little more room on small screens */
+  .results-title{
+    font-size: clamp(1.15rem, 6vw, 1.5rem);
+  }
+}
