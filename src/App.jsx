@@ -1,5 +1,8 @@
 // App.jsx
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AuthAPI } from "./services/api"; // Import the API service
 import "./App.css";
 
 export default function App() {
@@ -8,23 +11,46 @@ export default function App() {
     password: "",
     showPwd: false,
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the intended destination from location state
+  const from = location.state?.from?.pathname || '/search';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((s) => ({ ...s, [name]: value }));
+    if (error) setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Username:", form.username);
-    console.log("Password:", form.password);
-    // TODO: authenticate, then navigate
+    setLoading(true);
+    setError("");
+
+    try {
+      const data = await AuthAPI.login(form.username, form.password);
+      
+      // Store the token
+      localStorage.setItem('access_token', data.access_token);
+      localStorage.setItem('token_type', data.token_type);
+      
+      // Navigate to intended destination or default to search
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError(err.message);
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div
       className="login-root"
-      // Set the brand color once to match the logo (adjust this hex to logo green)
       style={{ "--brand": "#99C129" }}
     >
       <header className="login-logo" aria-label="Site logo">
@@ -34,6 +60,12 @@ export default function App() {
       <main className="glass login-card" role="main" aria-labelledby="loginTitle">
         <h1 id="loginTitle" className="login-title">Vahan Check</h1>
         <p className="login-subtitle">Log in to continue</p>
+
+        {error && (
+          <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>
+            {error}
+          </div>
+        )}
 
         <form className="login-form" onSubmit={handleSubmit} autoComplete="on">
           <div className="field-row">
@@ -49,6 +81,7 @@ export default function App() {
               value={form.username}
               onChange={handleChange}
               aria-required="true"
+              disabled={loading}
             />
           </div>
 
@@ -65,6 +98,7 @@ export default function App() {
                 value={form.password}
                 onChange={handleChange}
                 aria-required="true"
+                disabled={loading}
               />
               <button
                 type="button"
@@ -72,14 +106,16 @@ export default function App() {
                 onClick={() => setForm((s) => ({ ...s, showPwd: !s.showPwd }))}
                 aria-pressed={form.showPwd}
                 aria-label={form.showPwd ? "Hide password" : "Show password"}
+                disabled={loading}
               >
                 {form.showPwd ? "Hide" : "Show"}
               </button>
             </div>
           </div>
 
-          {/* Button style remains exactly the same class: login-btn */}
-          <button type="submit" className="login-btn">Sign in</button>
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? "Signing in..." : "Sign in"}
+          </button>
         </form>
       </main>
     </div>

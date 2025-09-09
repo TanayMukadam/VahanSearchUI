@@ -1,9 +1,9 @@
 // ResultsPage.jsx
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FiDownload, FiArrowLeft } from "react-icons/fi";
+import { VahanAPI } from "../../services/api"; // Import API service
 import "./ResultsPage.css";
-import dummyArray from "../../data.json";
 
 /* helpers */
 const show = (v) =>
@@ -33,136 +33,65 @@ const parseSplitAddr = (s) => {
 export default function ResultsPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { reg_no } = useParams();
+  const { regNo } = useParams();
+  
+  // Add loading and error states
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [apiData, setApiData] = useState(null);
 
-  // legacy row-array support (kept for compatibility)
-  const mapResponseRow = (row) => ({
-    regNo: row[1],
-    class: row[2],
-    chassis: row[3],
-    engine: row[4],
-    vehicleManufacturerName: row[5],
-    model: row[6],
-    vehicleColour: row[7],
-    type: row[8],
-    normsType: row[9],
-    bodyType: row[10],
-    ownerCount: row[11]?.toString(),
-    owner: row[12],
-    ownerFatherName: row[13],
-    mobileNumber: row[14],
-    status: row[15],
-    statusAsOn: row[16],
-    regAuthority: row[17],
-    regDate: row[18],
-    vehicleManufacturingMonthYear: row[19],
-    rcExpiryDate: row[20],
-    vehicleTaxUpto: row[21],
-    vehicleInsuranceCompanyName: row[22],
-    vehicleInsuranceUpto: row[23],
-    vehicleInsurancePolicyNumber: row[24],
-    rcFinancer: row[25],
-    presentAddress: row[26],
-    permanentAddress: row[27],
-    vehicleCubicCapacity: row[28]?.toString(),
-    grossVehicleWeight: row[29]?.toString(),
-    unladenWeight: row[30]?.toString(),
-    vehicleCategory: row[31],
-    rcStandardCap: row[32]?.toString(),
-    vehicleCylindersNo: row[33]?.toString(),
-    vehicleSeatCapacity: row[34]?.toString(),
-    vehicleSleeperCapacity: row[35]?.toString(),
-    vehicleStandingCapacity: row[36]?.toString(),
-    wheelbase: row[37]?.toString(),
-    vehicleNumber: row[38],
-    puccNumber: row[39],
-    puccUpto: row[40],
-    blacklistStatus: row[41] || "",
-    permitIssueDate: row[42] || "",
-    permitNumber: row[43],
-    permitType: row[44],
-    permitValidFrom: row[45],
-    permitValidUpto: row[46],
-    nonUseStatus: row[47] || "",
-    nonUseFrom: row[48] || "",
-    nonUseTo: row[49] || "",
-    nationalPermitNumber: row[50] || "",
-    nationalPermitUpto: row[51] || "",
-    nationalPermitIssuedBy: row[52] || "",
-    isCommercial: Boolean(row[53]),
-    nocDetails: row[54] || "",
-    rtoCode: row[55],
-  });
+  // Fetch data from API if not passed through navigation state
+  useEffect(() => {
+    const fetchData = async () => {
+      // If we have data from navigation state, don't fetch from API
+      if (state?.data) {
+        return;
+      }
 
-  // prefer router-state legacy; otherwise use first object from data.json
-  const data = useMemo(() => {
-    const raw = state?.data;
-    if (raw && Array.isArray(raw) && raw.length > 0 && Array.isArray(raw[0])) {
-      return mapResponseRow(raw[0]);
-    }
-    const d = Array.isArray(dummyArray) ? dummyArray[0] : dummyArray;
+      // If no data and no regNo, redirect to search
+      if (!regNo) {
+        navigate('/search');
+        return;
+      }
 
-    const presentParsed = parseSplitAddr(d.splitPresentAddress);
-    const permanentParsed = parseSplitAddr(d.splitPermanentAddress);
+      setLoading(true);
+      setError("");
 
-    return {
-      regNo: d.regNo || d.vehicleNumber || "",
-      class: d.class || "",
-      chassis: d.chassis || "",
-      engine: d.engine || "",
-      vehicleManufacturerName: d.vehicleManufacturerName || "",
-      model: d.model || "",
-      vehicleColour: d.vehicleColour || "",
-      type: d.type || "",
-      normsType: d.normsType || "",
-      bodyType: d.bodyType || "",
-      ownerCount: d.ownerCount != null ? String(d.ownerCount) : "",
-      owner: d.owner || "",
-      ownerFatherName: d.ownerFatherName || "",
-      mobileNumber: d.mobileNumber || "",
-      status: d.status || "",
-      statusAsOn: d.statusAsOn || "",
-      regAuthority: d.regAuthority || "",
-      regDate: d.regDate || "",
-      vehicleManufacturingMonthYear: d.vehicleManufacturingMonthYear || "",
-      rcExpiryDate: d.rcExpiryDate || "",
-      vehicleTaxUpto: d.vehicleTaxUpto || "",
-      vehicleInsuranceCompanyName: d.vehicleInsuranceCompanyName || "",
-      vehicleInsuranceUpto: d.vehicleInsuranceUpto || "",
-      vehicleInsurancePolicyNumber: d.vehicleInsurancePolicyNumber || "",
-      rcFinancer: d.rcFinancer || "",
-      presentAddress: d.presentAddress || presentParsed || "",
-      permanentAddress: d.permanentAddress || permanentParsed || "",
-      vehicleCubicCapacity: d.vehicleCubicCapacity != null ? String(d.vehicleCubicCapacity) : "",
-      grossVehicleWeight: d.grossVehicleWeight != null ? String(d.grossVehicleWeight) : "",
-      unladenWeight: d.unladenWeight != null ? String(d.unladenWeight) : "",
-      vehicleCategory: d.vehicleCategory || "",
-      rcStandardCap: d.rcStandardCap != null ? String(d.rcStandardCap) : "",
-      vehicleCylindersNo: d.vehicleCylindersNo != null ? String(d.vehicleCylindersNo) : "",
-      vehicleSeatCapacity: d.vehicleSeatCapacity != null ? String(d.vehicleSeatCapacity) : "",
-      vehicleSleeperCapacity: d.vehicleSleeperCapacity != null ? String(d.vehicleSleeperCapacity) : "",
-      vehicleStandingCapacity: d.vehicleStandingCapacity != null ? String(d.vehicleStandingCapacity) : "",
-      wheelbase: d.wheelbase != null ? String(d.wheelbase) : "",
-      vehicleNumber: d.vehicleNumber || d.regNo || "",
-      puccNumber: d.puccNumber || "",
-      puccUpto: d.puccUpto || "",
-      blacklistStatus: d.blacklistStatus || "",
-      permitIssueDate: d.permitIssueDate || "",
-      permitNumber: d.permitNumber || "",
-      permitType: d.permitType || "",
-      permitValidFrom: d.permitValidFrom || "",
-      permitValidUpto: d.permitValidUpto || "",
-      nonUseStatus: d.nonUseStatus || "",
-      nonUseFrom: d.nonUseFrom || "",
-      nonUseTo: d.nonUseTo || "",
-      nationalPermitNumber: d.nationalPermitNumber || "",
-      nationalPermitUpto: d.nationalPermitUpto || "",
-      nationalPermitIssuedBy: d.nationalPermitIssuedBy || "",
-      isCommercial: Boolean(d.isCommercial),
-      nocDetails: d.nocDetails || "",
-      rtoCode: d.rtoCode || "",
+      try {
+        const result = await VahanAPI.getResultDetails(regNo);
+        setApiData(result);
+      } catch (err) {
+        if (err.message === 'AUTHENTICATION_ERROR') {
+          navigate('/');
+          return;
+        }
+        setError(err.message || "Failed to fetch vehicle details");
+        console.error('Fetch error:', err);
+      } finally {
+        setLoading(false);
+      }
     };
-  }, [state?.data]);
+
+    fetchData();
+  }, [regNo, state?.data, navigate]);
+
+  // Process the data (either from navigation state or API)
+  const data = useMemo(() => {
+    // Use navigation state data if available
+    if (state?.data && Array.isArray(state.data) && state.data.length > 0) {
+      const rawData = state.data[0];
+      return processVehicleData(rawData);
+    }
+
+    // Use API data if available
+    if (apiData && Array.isArray(apiData) && apiData.length > 0) {
+      const rawData = apiData[0];
+      return processVehicleData(rawData);
+    }
+
+    // Return empty data structure if no data available
+    return getEmptyDataStructure();
+  }, [state?.data, apiData]);
 
   const [open, setOpen] = useState({ owner: true, car: true });
   const toggle = (k) => setOpen((s) => ({ ...s, [k]: !s[k] }));
@@ -176,6 +105,58 @@ export default function ResultsPage() {
     a.click();
     URL.revokeObjectURL(url);
   };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="results-root">
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '50vh',
+          fontSize: '18px'
+        }}>
+          Loading vehicle details...
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="results-root">
+        <header className="results-logo login-logo" aria-label="Site logo">
+          <img className="results-logo-img login-logo-img" src="/images/logo.png" alt="CheckExplore Technologies" />
+        </header>
+        
+        <div className="results-header">
+          <button className="btn-header" onClick={() => navigate(-1)} aria-label="Go back">
+            <FiArrowLeft aria-hidden="true" />
+            <span>Back</span>
+          </button>
+          <h1 className="results-title">VahanSearch</h1>
+        </div>
+
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '2rem',
+          color: 'red'
+        }}>
+          <h3>Error Loading Data</h3>
+          <p>{error}</p>
+          <button 
+            onClick={() => navigate('/search')} 
+            className="login-btn"
+            style={{ marginTop: '1rem' }}
+          >
+            Back to Search
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="results-root">
@@ -255,6 +236,89 @@ export default function ResultsPage() {
       </CardSection>
     </div>
   );
+}
+
+/* Helper functions */
+function processVehicleData(rawData) {
+  const presentParsed = parseSplitAddr(rawData.splitPresentAddress);
+  const permanentParsed = parseSplitAddr(rawData.splitPermanentAddress);
+
+  return {
+    regNo: rawData.regNo || rawData.vehicleNumber || "",
+    class: rawData.class || "",
+    chassis: rawData.chassis || "",
+    engine: rawData.engine || "",
+    vehicleManufacturerName: rawData.vehicleManufacturerName || "",
+    model: rawData.model || "",
+    vehicleColour: rawData.vehicleColour || "",
+    type: rawData.type || "",
+    normsType: rawData.normsType || "",
+    bodyType: rawData.bodyType || "",
+    ownerCount: rawData.ownerCount != null ? String(rawData.ownerCount) : "",
+    owner: rawData.owner || "",
+    ownerFatherName: rawData.ownerFatherName || "",
+    mobileNumber: rawData.mobileNumber || "",
+    status: rawData.status || "",
+    statusAsOn: rawData.statusAsOn || "",
+    regAuthority: rawData.regAuthority || "",
+    regDate: rawData.regDate || "",
+    vehicleManufacturingMonthYear: rawData.vehicleManufacturingMonthYear || "",
+    rcExpiryDate: rawData.rcExpiryDate || "",
+    vehicleTaxUpto: rawData.vehicleTaxUpto || "",
+    vehicleInsuranceCompanyName: rawData.vehicleInsuranceCompanyName || "",
+    vehicleInsuranceUpto: rawData.vehicleInsuranceUpto || "",
+    vehicleInsurancePolicyNumber: rawData.vehicleInsurancePolicyNumber || "",
+    rcFinancer: rawData.rcFinancer || "",
+    presentAddress: rawData.presentAddress || presentParsed || "",
+    permanentAddress: rawData.permanentAddress || permanentParsed || "",
+    vehicleCubicCapacity: rawData.vehicleCubicCapacity != null ? String(rawData.vehicleCubicCapacity) : "",
+    grossVehicleWeight: rawData.grossVehicleWeight != null ? String(rawData.grossVehicleWeight) : "",
+    unladenWeight: rawData.unladenWeight != null ? String(rawData.unladenWeight) : "",
+    vehicleCategory: rawData.vehicleCategory || "",
+    rcStandardCap: rawData.rcStandardCap != null ? String(rawData.rcStandardCap) : "",
+    vehicleCylindersNo: rawData.vehicleCylindersNo != null ? String(rawData.vehicleCylindersNo) : "",
+    vehicleSeatCapacity: rawData.vehicleSeatCapacity != null ? String(rawData.vehicleSeatCapacity) : "",
+    vehicleSleeperCapacity: rawData.vehicleSleeperCapacity != null ? String(rawData.vehicleSleeperCapacity) : "",
+    vehicleStandingCapacity: rawData.vehicleStandingCapacity != null ? String(rawData.vehicleStandingCapacity) : "",
+    wheelbase: rawData.wheelbase != null ? String(rawData.wheelbase) : "",
+    vehicleNumber: rawData.vehicleNumber || rawData.regNo || "",
+    puccNumber: rawData.puccNumber || "",
+    puccUpto: rawData.puccUpto || "",
+    blacklistStatus: rawData.blacklistStatus || "",
+    permitIssueDate: rawData.permitIssueDate || "",
+    permitNumber: rawData.permitNumber || "",
+    permitType: rawData.permitType || "",
+    permitValidFrom: rawData.permitValidFrom || "",
+    permitValidUpto: rawData.permitValidUpto || "",
+    nonUseStatus: rawData.nonUseStatus || "",
+    nonUseFrom: rawData.nonUseFrom || "",
+    nonUseTo: rawData.nonUseTo || "",
+    nationalPermitNumber: rawData.nationalPermitNumber || "",
+    nationalPermitUpto: rawData.nationalPermitUpto || "",
+    nationalPermitIssuedBy: rawData.nationalPermitIssuedBy || "",
+    isCommercial: Boolean(rawData.isCommercial),
+    nocDetails: rawData.nocDetails || "",
+    rtoCode: rawData.rtoCode || "",
+  };
+}
+
+function getEmptyDataStructure() {
+  return {
+    regNo: "", class: "", chassis: "", engine: "", vehicleManufacturerName: "",
+    model: "", vehicleColour: "", type: "", normsType: "", bodyType: "",
+    ownerCount: "", owner: "", ownerFatherName: "", mobileNumber: "", status: "",
+    statusAsOn: "", regAuthority: "", regDate: "", vehicleManufacturingMonthYear: "",
+    rcExpiryDate: "", vehicleTaxUpto: "", vehicleInsuranceCompanyName: "",
+    vehicleInsuranceUpto: "", vehicleInsurancePolicyNumber: "", rcFinancer: "",
+    presentAddress: "", permanentAddress: "", vehicleCubicCapacity: "",
+    grossVehicleWeight: "", unladenWeight: "", vehicleCategory: "", rcStandardCap: "",
+    vehicleCylindersNo: "", vehicleSeatCapacity: "", vehicleSleeperCapacity: "",
+    vehicleStandingCapacity: "", wheelbase: "", vehicleNumber: "", puccNumber: "",
+    puccUpto: "", blacklistStatus: "", permitIssueDate: "", permitNumber: "",
+    permitType: "", permitValidFrom: "", permitValidUpto: "", nonUseStatus: "",
+    nonUseFrom: "", nonUseTo: "", nationalPermitNumber: "", nationalPermitUpto: "",
+    nationalPermitIssuedBy: "", isCommercial: false, nocDetails: "", rtoCode: "",
+  };
 }
 
 /* Collapsible section helper */
